@@ -11,9 +11,7 @@ namespace BareMetalApi
         public static void Main(string[] args)
         {
             var url = $"http://bangequal-server:{Environment.GetEnvironmentVariable("PORT")}/";
-
-            Console.WriteLine($"Using Url: {url}");
-
+            
             var config = new ConfigurationBuilder()
                 .AddCommandLine(args)
                 .AddEnvironmentVariables(prefix: "ASPNETCORE_")
