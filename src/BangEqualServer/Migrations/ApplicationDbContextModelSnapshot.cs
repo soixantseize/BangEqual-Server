@@ -22,6 +22,16 @@ namespace BareMetalApi.Migrations
 
                     b.Property<string>("ArticleTitle");
 
+                    b.Property<int>("ArticleId");
+
+                    b.Property<int>("ArticleAuthor");
+
+                    b.Property<int>("ArticleTopic");
+
+                    b.Property<string>("ArticleTags");
+
+                    b.Property<int>("ArticleLikes");
+
                     b.Property<string>("ArticleContent");
 
                     b.HasKey("Id");

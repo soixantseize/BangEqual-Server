@@ -17,7 +17,7 @@ namespace BareMetalApi.Repositories
 
         public async Task<bool> DoesItemExist(int id)
         {
-            var dbEntity = await _context.BlogArticles.AnyAsync(blogarticle => blogarticle.Id == id);
+            var dbEntity = await _context.BlogArticles.AnyAsync(blogarticle => blogarticle.ArticleId == id);
             return dbEntity;
         }
         public async Task <IList<BlogArticle>> GetAll()
@@ -28,7 +28,8 @@ namespace BareMetalApi.Repositories
 
         public async Task <BlogArticle> GetById(int id)
         {
-            var dbEntity = await _context.BlogArticles.FirstOrDefaultAsync();
+            var dbEntity = await _context.BlogArticles
+				.SingleOrDefaultAsync(m => m.ArticleId == id);
             return dbEntity;
             
         }

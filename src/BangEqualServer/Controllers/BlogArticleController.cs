@@ -8,7 +8,7 @@ using BareMetalApi.Repositories.Interfaces;
 namespace BareMetalApi.Controllers
 {
     [Route("blog/[controller]")]
-    [Authorize(Policy = "Bearer")]
+    //[Authorize(Policy = "Bearer")]
     public class BlogArticleController : ControllerBase
     {
         private readonly IBlogArticleRepository _repository;
@@ -30,7 +30,9 @@ namespace BareMetalApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok( _repository.GetById(id).Result);
+            var data = _repository.GetById(id).Result;
+            data.ArticleContent = CommonMark.CommonMarkConverter.Convert(data.ArticleContent);
+            return Ok( data);
         }
 
         // POST blog/blogarticle
@@ -43,7 +45,7 @@ namespace BareMetalApi.Controllers
                 {
                     return BadRequest(ErrorCode.TitleAndContentRequired.ToString());
                 }
-                bool itemExists = _repository.DoesItemExist(blogarticle.Id).Result;
+                bool itemExists = _repository.DoesItemExist(blogarticle.ArticleId).Result;
                 if (itemExists)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, ErrorCode.IDInUse.ToString());

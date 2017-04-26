@@ -16,8 +16,13 @@ namespace BareMetalApi.Migrations
                         //upgrading from Npgsql.EntityFrameworkCore.PostgreSQL 1.0.0
                         //caused error on following line
                         .Annotation("Npgsql:ValueGeneratedOnAdd", true),
-                    ArticleTitle = table.Column<string>(nullable: true),
-                    ArticleContent = table.Column<string>(nullable: true)
+                    ArticleId = table.Column<int>(nullable: false),
+                    ArticleTitle = table.Column<string>(nullable: false),
+                    ArticleAuthor = table.Column<int>(nullable: false),
+                    ArticleTopic = table.Column<int>(nullable: false),
+                    ArticleTags = table.Column<string>(nullable: false),
+                    ArticleLikes = table.Column<int>(nullable: true),
+                    ArticleContent = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

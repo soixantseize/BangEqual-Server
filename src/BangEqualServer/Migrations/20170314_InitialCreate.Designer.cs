@@ -20,8 +20,18 @@ namespace BareMetalApi.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+                    
+                    b.Property<int>("ArticleId");
 
                     b.Property<string>("ArticleTitle");
+
+                    b.Property<int>("ArticleAuthor");
+
+                    b.Property<int>("ArticleTopic");
+
+                    b.Property<string>("ArticleTags");
+
+                    b.Property<int>("ArticleLikes");
 
                     b.Property<string>("ArticleContent");
 
