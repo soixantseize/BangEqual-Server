@@ -22,8 +22,7 @@ namespace BareMetalApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok( _repository.GetAll().Result);
-            
+            return Ok( _repository.GetAll().Result);     
         }
 
         // GET blog/blogarticle/5
@@ -31,7 +30,7 @@ namespace BareMetalApi.Controllers
         public IActionResult Get(int id)
         {
             var data = _repository.GetById(id).Result;
-            data.ArticleContent = CommonMark.CommonMarkConverter.Convert(data.ArticleContent);
+            data.ArticleContentMarkdown = CommonMark.CommonMarkConverter.Convert(data.ArticleContentMarkdown);
             return Ok( data);
         }
 

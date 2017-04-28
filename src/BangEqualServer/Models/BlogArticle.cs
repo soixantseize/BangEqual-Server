@@ -10,7 +10,6 @@ namespace BareMetalApi.Models
         public string ArticleTags { get; set; }
         public int ArticleLikes { get; set; }
         public string ArticleContent { get; set; }
-    }
-
-   
+        public string ArticleContentMarkdown { get; set; }
+    }  
 }

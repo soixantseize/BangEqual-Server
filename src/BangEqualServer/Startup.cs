@@ -23,7 +23,8 @@ namespace BareMetalApi
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @"./src/BangEqualServer/"))
+                //.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @"./src/BangEqualServer/"))
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @""))
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
@@ -112,12 +113,15 @@ namespace BareMetalApi
 
             app.UseMvc();
 
+            //var dataText = System.IO.File.ReadAllText(@"./src/BangEqualServer/articledata.json"); 
+            var dataText = System.IO.File.ReadAllText(@"articledata.json");            
+
             //Create DB on startup
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                  var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
                  context.Database.Migrate();
-                 context.EnsureSeedData();
+                 context.EnsureSeedData(dataText);
             }
         }
     }

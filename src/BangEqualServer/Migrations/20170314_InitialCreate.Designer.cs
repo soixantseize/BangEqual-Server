@@ -35,6 +35,8 @@ namespace BareMetalApi.Migrations
 
                     b.Property<string>("ArticleContent");
 
+                     b.Property<string>("ArticleContentMarkdown");
+
                     b.HasKey("Id");
                     //Table name must be same as DbSet
                     b.ToTable("BlogArticles");

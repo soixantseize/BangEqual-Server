@@ -22,7 +22,8 @@ namespace BareMetalApi.Migrations
                     ArticleTopic = table.Column<int>(nullable: false),
                     ArticleTags = table.Column<string>(nullable: false),
                     ArticleLikes = table.Column<int>(nullable: true),
-                    ArticleContent = table.Column<string>(nullable: false)
+                    ArticleContent = table.Column<string>(nullable: false),
+                    ArticleContentMarkdown = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
