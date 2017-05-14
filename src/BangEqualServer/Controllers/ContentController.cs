@@ -29,6 +29,7 @@ namespace BareMetalApi.Controllers
         public IActionResult Get(int id)
         {
             var data = _repository.GetById(id).Result;
+            data.RenderString = CommonMark.CommonMarkConverter.Convert(data.RenderString);
             return Ok( data);
         }
 
