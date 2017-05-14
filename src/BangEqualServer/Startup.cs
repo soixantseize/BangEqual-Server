@@ -48,6 +48,7 @@ namespace BareMetalApi
             });
 
             services.AddSingleton<IBlogArticleRepository, BlogArticleRepository>();
+            services.AddSingleton<IShopDesignRepository, ShopDesignRepository>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -113,15 +114,18 @@ namespace BareMetalApi
 
             app.UseMvc();
 
-            //var dataText = System.IO.File.ReadAllText(@"./src/BangEqualServer/articledata.json"); 
-            var dataText = System.IO.File.ReadAllText(@"articledata.json");            
+            //var dataText = System.IO.File.ReadAllText(@"./src/BangEqualServer/articledata.json");
+            //var shopData = System.IO.File.ReadAllText(@"./src/BangEqualServer/designdata.json");
+            var shopData = System.IO.File.ReadAllText(@"./designdata.json"); 
+            var dataText = System.IO.File.ReadAllText(@"./articledata.json"); 
+              
 
             //Create DB on startup
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                  var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
                  context.Database.Migrate();
-                 context.EnsureSeedData(dataText);
+                 context.EnsureSeedData(dataText, shopData);
             }
         }
     }

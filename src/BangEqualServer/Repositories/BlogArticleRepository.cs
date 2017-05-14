@@ -36,7 +36,7 @@ namespace BareMetalApi.Repositories
 
         public async Task <int> AddAsync(BlogArticle blogarticle)
         {
-            _context.BlogArticles.Add(new BlogArticle { ArticleTitle = blogarticle.ArticleTitle, ArticleContent = blogarticle.ArticleContent});
+            _context.BlogArticles.Add(new BlogArticle { Title = blogarticle.Title, Content = blogarticle.Content});
             return await _context.SaveChangesAsync();
         }
 
@@ -44,8 +44,8 @@ namespace BareMetalApi.Repositories
         {
             _context.Attach(blogarticle);
             var entry = _context.Entry(blogarticle);
-            entry.Property(e => e.ArticleTitle).IsModified = true;
-            entry.Property(e => e.ArticleContent).IsModified = true;
+            entry.Property(e => e.Title).IsModified = true;
+            entry.Property(e => e.Content).IsModified = true;
             await _context.SaveChangesAsync();
         }
 

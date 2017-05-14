@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BareMetalApi.Models;
@@ -10,7 +11,7 @@ namespace BareMetalApi.Migrations
     public static class ApplicationDbExtensions
     {
 
-        public static void EnsureSeedData(this ApplicationDbContext context, string jsonData)
+        public static void EnsureSeedData(this ApplicationDbContext context, string jsonData, string shopData)
         {
             List<BlogArticle> articles = JsonConvert.DeserializeObject<List<BlogArticle>>(jsonData);
 
@@ -23,13 +24,36 @@ namespace BareMetalApi.Migrations
                         context.BlogArticles.AddRange(
                             new BlogArticle {
                             ArticleId = ba.ArticleId, 
-                            ArticleTitle = ba.ArticleTitle, 
-                            ArticleAuthor = ba.ArticleAuthor, 
-                            ArticleTopic = ba.ArticleTopic, 
-                            ArticleTags = ba.ArticleTags, 
-                            ArticleLikes = ba.ArticleLikes, 
-                            ArticleContent = ba.ArticleContent, 
-                            ArticleContentMarkdown = ba.ArticleContentMarkdown 
+                            Title = ba.Title, 
+                            Author = ba.Author, 
+                            Topic = ba.Topic, 
+                            Tags = ba.Tags, 
+                            Views = ba.Views, 
+                            Shares = ba.Shares,
+                            Active = ba.Active, 
+                            Content = ba.Content
+                            }); 
+                        context.SaveChanges();
+                    }                       
+                }
+
+                List<ShopDesign> shopdesigns = JsonConvert.DeserializeObject<List<ShopDesign>>(shopData);
+                DateTime dt = DateTime.Now;
+
+                if (!context.ShopDesigns.Any())
+                {
+                    foreach(ShopDesign sd in shopdesigns)
+                    {
+                        context.ShopDesigns.AddRange(
+                            new ShopDesign {
+                            DesignId = sd.DesignId, 
+                            Title = sd.Title, 
+                            Author = sd.Author, 
+                            Tags = sd.Tags, 
+                            Views = sd.Views,
+                            Shares = sd.Shares,
+                            Active = sd.Active,
+                            Content = sd.Content
                             }); 
                         context.SaveChanges();
                     }                       

@@ -23,23 +23,51 @@ namespace BareMetalApi.Migrations
                     
                     b.Property<int>("ArticleId");
 
-                    b.Property<string>("ArticleTitle");
+                    b.Property<string>("Title");
 
-                    b.Property<int>("ArticleAuthor");
+                    b.Property<string>("Author");
 
-                    b.Property<int>("ArticleTopic");
+                    b.Property<string>("Topic");
 
-                    b.Property<string>("ArticleTags");
+                    b.Property<string>("Tags");
 
-                    b.Property<int>("ArticleLikes");
+                    b.Property<int>("Views");
 
-                    b.Property<string>("ArticleContent");
+                    b.Property<int>("Shares");
 
-                     b.Property<string>("ArticleContentMarkdown");
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Content");
 
                     b.HasKey("Id");
                     //Table name must be same as DbSet
                     b.ToTable("BlogArticles");
+                });
+
+             modelBuilder.Entity("BareMetalApi.Models.ShopDesign", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DesignId");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("Author");
+
+                    b.Property<string>("Tags");
+
+                    b.Property<int>("Views");
+
+                    b.Property<int>("Shares");
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Content");
+
+                    b.HasKey("Id");
+                    //Table name must be same as DbSet
+                    b.ToTable("ShopDesigns");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>

@@ -17,17 +17,41 @@ namespace BareMetalApi.Migrations
                         //caused error on following line
                         .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     ArticleId = table.Column<int>(nullable: false),
-                    ArticleTitle = table.Column<string>(nullable: false),
-                    ArticleAuthor = table.Column<int>(nullable: false),
-                    ArticleTopic = table.Column<int>(nullable: false),
-                    ArticleTags = table.Column<string>(nullable: false),
-                    ArticleLikes = table.Column<int>(nullable: true),
-                    ArticleContent = table.Column<string>(nullable: false),
-                    ArticleContentMarkdown = table.Column<string>(nullable: false)
+                    Title = table.Column<string>(nullable: false),
+                    Author = table.Column<string>(nullable: false),
+                    Topic = table.Column<string>(nullable: false),
+                    Tags = table.Column<string>(nullable: false),
+                    Views = table.Column<int>(nullable: true),
+                    Shares = table.Column<int>(nullable: true),
+                    Active = table.Column<bool>(nullable: false),
+                    Content = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BlogArticles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                //Table name must be same as DbSet
+                name: "ShopDesigns",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        //upgrading from Npgsql.EntityFrameworkCore.PostgreSQL 1.0.0
+                        //caused error on following line
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
+                    DesignId = table.Column<int>(nullable: false),
+                    Title = table.Column<string>(nullable: false),
+                    Author = table.Column<string>(nullable: false),
+                    Tags = table.Column<string>(nullable: false),
+                    Views = table.Column<int>(nullable: true),
+                    Shares = table.Column<int>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
+                    Content = table.Column<string>(nullable: true)      
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShopDesigns", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(

@@ -6,64 +6,63 @@ using BareMetalApi.Repositories.Interfaces;
 
 namespace BareMetalApi.Controllers
 {
-    [Route("blog/[controller]")]
+    [Route("shop/[controller]")]
     //[Authorize(Policy = "Bearer")]
-    public class BlogArticleController : ControllerBase
+    public class ShopDesignController : ControllerBase
     {
-        private readonly IBlogArticleRepository _repository;
+        private readonly IShopDesignRepository _repository;
 
-        public BlogArticleController(IBlogArticleRepository repository)
+        public ShopDesignController(IShopDesignRepository repository)
         {
             _repository = repository;
         }
         
-        // GET blog/blogarticle
+        // GET shop/shopdesign
         [HttpGet]
         public IActionResult Get()
         {
             return Ok( _repository.GetAll().Result);     
         }
 
-        // GET blog/blogarticle/5
+        // GET shop/shopdesign/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var data = _repository.GetById(id).Result;
-            data.Content = CommonMark.CommonMarkConverter.Convert(data.Content);
             return Ok( data);
         }
 
-        // POST blog/blogarticle
+        // POST shop/shopdesign
         [HttpPost]
-        public IActionResult Post([FromBody]BlogArticle blogarticle)
+        public IActionResult Post([FromBody]ShopDesign shopdesign)
         {
             try
             {
-                if (blogarticle == null || !ModelState.IsValid)
+                if (shopdesign == null || !ModelState.IsValid)
                 {
                     return BadRequest(ErrorCode.TitleAndContentRequired.ToString());
                 }
-                bool itemExists = _repository.DoesItemExist(blogarticle.ArticleId).Result;
+                bool itemExists = _repository.DoesItemExist(shopdesign.DesignId).Result;
                 if (itemExists)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, ErrorCode.IDInUse.ToString());
                 }
-                _repository.AddAsync(blogarticle);
+                _repository.AddAsync(shopdesign);
             }
             catch (Exception)
             {
                 return BadRequest(ErrorCode.CouldNotCreateItem.ToString());
             }
-            return Ok(blogarticle);
+            return Ok(shopdesign);
         }
 
-        // PUT blog/blogarticle/5
+        // PUT shop/shopdesign/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]BlogArticle blogarticle)
+        public IActionResult Put(int id, [FromBody]ShopDesign shopdesign)
         {
             try
             {
-                if (blogarticle == null || !ModelState.IsValid)
+                if (shopdesign == null || !ModelState.IsValid)
                 {
                     return BadRequest(ErrorCode.TitleAndContentRequired.ToString());
                 }
@@ -72,7 +71,7 @@ namespace BareMetalApi.Controllers
                 {
                     return NotFound(ErrorCode.RecordNotFound.ToString());
                 }
-                _repository.UpdateAsync(blogarticle);
+                _repository.UpdateAsync(shopdesign);
                 
             }
             catch (Exception e)
@@ -88,12 +87,12 @@ namespace BareMetalApi.Controllers
         {
              try
             {
-                var blogarticle = _repository.GetById(id).Result;
-                if (blogarticle == null)
+                var shopdesign = _repository.GetById(id).Result;
+                if (shopdesign == null)
                 {
                     return NotFound(ErrorCode.RecordNotFound.ToString());
                 }
-                _repository.DeleteAsync(blogarticle);
+                _repository.DeleteAsync(shopdesign);
             }
             catch (Exception e)
             {
