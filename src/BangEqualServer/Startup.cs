@@ -24,7 +24,7 @@ namespace BareMetalApi
         {
             var builder = new ConfigurationBuilder()
                 //.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @"./src/BangEqualServer/"))
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @""))
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
@@ -42,7 +42,7 @@ namespace BareMetalApi
             //services.AddDbContext<ApplicationDbContext>(
                 //opts => opts.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            //Gets connection string from appsettings.json
+                        //Gets connection string from appsettings.json
             string url = Environment.GetEnvironmentVariable("DATABASE_URL");
             string[] substrings = url.Split(':');
             string user = substrings[1].Substring(2);
