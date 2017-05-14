@@ -6,73 +6,73 @@ using BareMetalApi.Repositories.Interfaces;
 
 namespace BareMetalApi.Controllers
 {
-    [Route("blog/[controller]")]
+    [Route("index/[controller]")]
     //[Authorize(Policy = "Bearer")]
-    public class BlogArticleController : ControllerBase
+    public class ContentController : ControllerBase
     {
-        private readonly IBlogArticleRepository _repository;
+        private readonly IContentRepository _repository;
 
-        public BlogArticleController(IBlogArticleRepository repository)
+        public ContentController(IContentRepository repository)
         {
             _repository = repository;
         }
         
-        // GET blog/blogarticle
+        // GET index/content
         [HttpGet]
         public IActionResult Get()
         {
             return Ok( _repository.GetAll().Result);     
         }
 
-        // GET blog/blogarticle/5
+        // GET index/content/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             var data = _repository.GetById(id).Result;
-            data.Content = CommonMark.CommonMarkConverter.Convert(data.Content);
+            data.RenderString = CommonMark.CommonMarkConverter.Convert(data.RenderString);
             return Ok( data);
         }
 
-        // POST blog/blogarticle
+        // POST index/content
         [HttpPost]
-        public IActionResult Post([FromBody]BlogArticle blogarticle)
+        public IActionResult Post([FromBody]Content c)
         {
             try
             {
-                if (blogarticle == null || !ModelState.IsValid)
+                if (c == null || !ModelState.IsValid)
                 {
                     return BadRequest(ErrorCode.TitleAndContentRequired.ToString());
                 }
-                bool itemExists = _repository.DoesItemExist(blogarticle.ArticleId).Result;
+                bool itemExists = _repository.DoesItemExist(c.ContentId).Result;
                 if (itemExists)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, ErrorCode.IDInUse.ToString());
                 }
-                _repository.AddAsync(blogarticle);
+                _repository.AddAsync(c);
             }
             catch (Exception)
             {
                 return BadRequest(ErrorCode.CouldNotCreateItem.ToString());
             }
-            return Ok(blogarticle);
+            return Ok(c);
         }
 
-        // PUT blog/blogarticle/5
+        // PUT index/content/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]BlogArticle blogarticle)
+        public IActionResult Put(int id, [FromBody]Content c)
         {
             try
             {
-                if (blogarticle == null || !ModelState.IsValid)
+                if (c == null || !ModelState.IsValid)
                 {
                     return BadRequest(ErrorCode.TitleAndContentRequired.ToString());
                 }
-                var existingBlogArticle = _repository.GetById(id);
-                if (existingBlogArticle == null)
+                var existingContent = _repository.GetById(id);
+                if (existingContent == null)
                 {
                     return NotFound(ErrorCode.RecordNotFound.ToString());
                 }
-                _repository.UpdateAsync(blogarticle);
+                _repository.UpdateAsync(c);
                 
             }
             catch (Exception e)
@@ -82,18 +82,18 @@ namespace BareMetalApi.Controllers
             return NoContent();
         }
 
-        // DELETE api/values/5
+        // DELETE index/content/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
              try
             {
-                var blogarticle = _repository.GetById(id).Result;
-                if (blogarticle == null)
+                var content = _repository.GetById(id).Result;
+                if (content == null)
                 {
                     return NotFound(ErrorCode.RecordNotFound.ToString());
                 }
-                _repository.DeleteAsync(blogarticle);
+                _repository.DeleteAsync(content);
             }
             catch (Exception e)
             {

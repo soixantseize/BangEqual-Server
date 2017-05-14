@@ -8,7 +8,7 @@ using BareMetalApi.Models;
 namespace BareMetalApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170314_InitialCreate")]
+    [Migration("20170513_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -16,12 +16,14 @@ namespace BareMetalApi.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
-            modelBuilder.Entity("BareMetalApi.Models.BlogArticle", b =>
+            modelBuilder.Entity("BareMetalApi.Models.Content", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
                     
-                    b.Property<int>("ArticleId");
+                    b.Property<int>("ContentId");
+
+                    b.Property<string>("Type");
 
                     b.Property<string>("Title");
 
@@ -35,39 +37,15 @@ namespace BareMetalApi.Migrations
 
                     b.Property<int>("Shares");
 
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("Content");
-
-                    b.HasKey("Id");
-                    //Table name must be same as DbSet
-                    b.ToTable("BlogArticles");
-                });
-
-             modelBuilder.Entity("BareMetalApi.Models.ShopDesign", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("DesignId");
-
-                    b.Property<string>("Title");
-
-                    b.Property<string>("Author");
-
-                    b.Property<string>("Tags");
-
-                    b.Property<int>("Views");
-
-                    b.Property<int>("Shares");
+                    b.Property<string>("Caption");
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("Content");
+                    b.Property<string>("RenderString");
 
                     b.HasKey("Id");
                     //Table name must be same as DbSet
-                    b.ToTable("ShopDesigns");
+                    b.ToTable("SiteContent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>

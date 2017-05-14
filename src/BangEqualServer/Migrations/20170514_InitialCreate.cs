@@ -9,49 +9,28 @@ namespace BareMetalApi.Migrations
         {
             migrationBuilder.CreateTable(
                 //Table name must be same as DbSet
-                name: "BlogArticles",
+                name: "SiteContent",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         //upgrading from Npgsql.EntityFrameworkCore.PostgreSQL 1.0.0
                         //caused error on following line
                         .Annotation("Npgsql:ValueGeneratedOnAdd", true),
-                    ArticleId = table.Column<int>(nullable: false),
+                    ContentId = table.Column<int>(nullable: false),
+                    Type = table.Column<string>(nullable: false),
                     Title = table.Column<string>(nullable: false),
                     Author = table.Column<string>(nullable: false),
                     Topic = table.Column<string>(nullable: false),
                     Tags = table.Column<string>(nullable: false),
                     Views = table.Column<int>(nullable: true),
                     Shares = table.Column<int>(nullable: true),
+                    Caption = table.Column<string>(nullable: false),
                     Active = table.Column<bool>(nullable: false),
-                    Content = table.Column<string>(nullable: false)
+                    RenderString = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BlogArticles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                //Table name must be same as DbSet
-                name: "ShopDesigns",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        //upgrading from Npgsql.EntityFrameworkCore.PostgreSQL 1.0.0
-                        //caused error on following line
-                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
-                    DesignId = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(nullable: false),
-                    Author = table.Column<string>(nullable: false),
-                    Tags = table.Column<string>(nullable: false),
-                    Views = table.Column<int>(nullable: true),
-                    Shares = table.Column<int>(nullable: false),
-                    Active = table.Column<bool>(nullable: false),
-                    Content = table.Column<string>(nullable: true)      
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShopDesigns", x => x.Id);
+                    table.PrimaryKey("PK_Content", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,7 +217,7 @@ namespace BareMetalApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BlogArticles");
+                name: "SiteContent");
             
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

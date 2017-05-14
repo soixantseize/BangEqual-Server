@@ -11,53 +11,33 @@ namespace BareMetalApi.Migrations
     public static class ApplicationDbExtensions
     {
 
-        public static void EnsureSeedData(this ApplicationDbContext context, string jsonData, string shopData)
+        public static void EnsureSeedData(this ApplicationDbContext context, string jsonData)
         {
-            List<BlogArticle> articles = JsonConvert.DeserializeObject<List<BlogArticle>>(jsonData);
+            List<Content> sitecontent = JsonConvert.DeserializeObject<List<Content>>(jsonData);
 
             if (!context.Database.GetPendingMigrations().Any())
             {
-                if (!context.BlogArticles.Any())
+                if (!context.SiteContent.Any())
                 {
-                    foreach(BlogArticle ba in articles)
+                    foreach(Content c in sitecontent)
                     {
-                        context.BlogArticles.AddRange(
-                            new BlogArticle {
-                            ArticleId = ba.ArticleId, 
-                            Title = ba.Title, 
-                            Author = ba.Author, 
-                            Topic = ba.Topic, 
-                            Tags = ba.Tags, 
-                            Views = ba.Views, 
-                            Shares = ba.Shares,
-                            Active = ba.Active, 
-                            Content = ba.Content
+                        context.SiteContent.AddRange(
+                            new Content {
+                            ContentId = c.ContentId, 
+                            Type = c.Type,
+                            Title = c.Title, 
+                            Author = c.Author, 
+                            Topic = c.Topic, 
+                            Tags = c.Tags, 
+                            Views = c.Views, 
+                            Shares = c.Shares,
+                            Caption = c.Caption,
+                            Active = c.Active, 
+                            RenderString = c.RenderString
                             }); 
                         context.SaveChanges();
-                    }                       
-                }
-
-                List<ShopDesign> shopdesigns = JsonConvert.DeserializeObject<List<ShopDesign>>(shopData);
-                DateTime dt = DateTime.Now;
-
-                if (!context.ShopDesigns.Any())
-                {
-                    foreach(ShopDesign sd in shopdesigns)
-                    {
-                        context.ShopDesigns.AddRange(
-                            new ShopDesign {
-                            DesignId = sd.DesignId, 
-                            Title = sd.Title, 
-                            Author = sd.Author, 
-                            Tags = sd.Tags, 
-                            Views = sd.Views,
-                            Shares = sd.Shares,
-                            Active = sd.Active,
-                            Content = sd.Content
-                            }); 
-                        context.SaveChanges();
-                    }                       
-                }
+                    }    
+                }                   
             }
         }
     }

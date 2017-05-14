@@ -9,8 +9,6 @@ namespace BareMetalApi.Models
         { }
 
         //object name must be same as table name defined in Migrations
-        public DbSet<BlogArticle> BlogArticles{ get; set; }
-
-        public DbSet<ShopDesign> ShopDesigns{ get; set; }
+        public DbSet<Content> SiteContent{ get; set; }
     }
 }

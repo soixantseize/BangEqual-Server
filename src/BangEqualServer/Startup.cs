@@ -24,7 +24,7 @@ namespace BareMetalApi
         {
             var builder = new ConfigurationBuilder()
                 //.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @"./src/BangEqualServer/"))
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @""))
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
@@ -39,16 +39,28 @@ namespace BareMetalApi
             services.AddOptions();
             
             //Gets connection string from appsettings.json
+            //services.AddDbContext<ApplicationDbContext>(
+                //opts => opts.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+            //Gets connection string from appsettings.json
+            string url = Environment.GetEnvironmentVariable("DATABASE_URL");
+            string[] substrings = url.Split(':');
+            string user = substrings[1].Substring(2);
+            string database = substrings[substrings.Length - 1].Substring(5);
+            string [] substrings2 = substrings[2].Split('@');
+            string password = substrings2[0];
+            string host = substrings2[1];
+            string connstr = $"User ID={user};Password={password};Host={host};Port=5432;Database={database};Pooling=true";
+            
             services.AddDbContext<ApplicationDbContext>(
-                opts => opts.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+                opts => opts.UseNpgsql(connstr));
             
             services.Configure<TokenAuthOption>(options =>
             {
                 options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])), SecurityAlgorithms.HmacSha256Signature);
             });
 
-            services.AddSingleton<IBlogArticleRepository, BlogArticleRepository>();
-            services.AddSingleton<IShopDesignRepository, ShopDesignRepository>();
+            services.AddSingleton<IContentRepository, ContentRepository>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -115,9 +127,7 @@ namespace BareMetalApi
             app.UseMvc();
 
             //var dataText = System.IO.File.ReadAllText(@"./src/BangEqualServer/articledata.json");
-            //var shopData = System.IO.File.ReadAllText(@"./src/BangEqualServer/designdata.json");
-            var shopData = System.IO.File.ReadAllText(@"./designdata.json"); 
-            var dataText = System.IO.File.ReadAllText(@"./articledata.json"); 
+            var dataText = System.IO.File.ReadAllText(@"./contentdata.json"); 
               
 
             //Create DB on startup
@@ -125,7 +135,7 @@ namespace BareMetalApi
             {
                  var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
                  context.Database.Migrate();
-                 context.EnsureSeedData(dataText, shopData);
+                 context.EnsureSeedData(dataText);
             }
         }
     }
