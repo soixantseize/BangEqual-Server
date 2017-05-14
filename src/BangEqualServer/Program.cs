@@ -10,7 +10,7 @@ namespace BareMetalApi
     {
         public static void Main(string[] args)
         {
-            var url = $"http://bangequal-server:{Environment.GetEnvironmentVariable("PORT")}/";
+            var url = $"https://*:{Environment.GetEnvironmentVariable("PORT")}/";
             
             var config = new ConfigurationBuilder()
                 .AddCommandLine(args)
