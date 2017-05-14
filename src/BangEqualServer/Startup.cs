@@ -24,7 +24,7 @@ namespace BareMetalApi
         {
             var builder = new ConfigurationBuilder()
                 //.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @"./src/BangEqualServer/"))
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @""))
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
