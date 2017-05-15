@@ -127,7 +127,7 @@ namespace BareMetalApi
             app.UseMvc();
 
             //var dataText = System.IO.File.ReadAllText(@"./src/BangEqualServer/articledata.json");
-            var dataText = System.IO.File.ReadAllText(@"./contentdata.json"); 
+            //var dataText = System.IO.File.ReadAllText(@"./contentdata.json"); 
               
 
             //Create DB on startup
@@ -135,7 +135,7 @@ namespace BareMetalApi
             {
                  var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
                  context.Database.Migrate();
-                 context.EnsureSeedData(dataText);
+                 context.EnsureSeedData();
             }
         }
     }
