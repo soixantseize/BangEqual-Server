@@ -38,11 +38,13 @@ namespace BareMetalApi
         {
             services.AddOptions();
             
+            //DEV
             //Gets connection string from appsettings.json
             //services.AddDbContext<ApplicationDbContext>(
                 //opts => opts.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-                        //Gets connection string from appsettings.json
+            //PRODUCTION
+            //Gets connection string from Env Vars
             string url = Environment.GetEnvironmentVariable("DATABASE_URL");
             string[] substrings = url.Split(':');
             string user = substrings[1].Substring(2);
@@ -57,7 +59,12 @@ namespace BareMetalApi
             
             services.Configure<TokenAuthOption>(options =>
             {
-                options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))), SecurityAlgorithms.HmacSha256Signature);
+                //LOCAL DEV USES CONFIG FILE
+                //options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
+
+                //PRODUCTION USES ENV VAR
+                options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),  
+                SecurityAlgorithms.HmacSha256Signature);
             });
 
             services.AddSingleton<IContentRepository, ContentRepository>();
@@ -109,7 +116,10 @@ namespace BareMetalApi
                     ValidIssuer = "MyIssuer",
                     // When receiving a token, check that we've signed it.
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
+                    //LOCAL DEV USES CONFIG FILE
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
+                    //PRODUCTION USES ENV VAR
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
                     // When receiving a token, check that it is still valid.
                     RequireExpirationTime = true,
                     ValidateLifetime = true,

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using BareMetalApi.Models;
 using BareMetalApi.Repositories.Interfaces;
@@ -20,9 +21,12 @@ namespace BareMetalApi.Repositories
             var dbEntity = await _context.SiteContent.AnyAsync(content => content.ContentId == id);
             return dbEntity;
         }
-        public async Task <IList<Content>> GetAll()
+        public async Task <IList<Content>> GetContent(string type)
         {
-            var dbEntity = await _context.SiteContent.ToListAsync();
+            var dbEntity = await _context.SiteContent
+                .Where(c => c.Type == type)
+                .ToListAsync();
+            
             return dbEntity;
         }
 

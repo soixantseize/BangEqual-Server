@@ -6,22 +6,22 @@ using BareMetalApi.Repositories.Interfaces;
 
 namespace BareMetalApi.Controllers
 {
-    [Route("index/[controller]")]
+    [Route("/[controller]")]
     //[Authorize(Policy = "Bearer")]
-    public class ContentController : ControllerBase
+    public class HomeController : ControllerBase
     {
         private readonly IContentRepository _repository;
 
-        public ContentController(IContentRepository repository)
+        public HomeController(IContentRepository repository)
         {
             _repository = repository;
         }
         
-        // GET index/content
-        [HttpGet]
-        public IActionResult Get()
+        // GET home/articles
+        [HttpGet("{type:minlength(4)}")]
+        public IActionResult Articles(string type)
         {
-            return Ok( _repository.GetAll().Result);     
+            return Ok( _repository.GetContent(type).Result);          
         }
 
         // GET index/content/5
