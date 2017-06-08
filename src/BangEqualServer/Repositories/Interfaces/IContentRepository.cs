@@ -9,7 +9,11 @@ namespace BareMetalApi.Repositories.Interfaces
         //Task<IEnumerable<BlogArticle>> TestGetAll();
         Task<bool> DoesItemExist(int id);
 
-        Task<IList<Content>> GetContent(string type);
+        Task<IList<IList<Content>>> GetContent(string type, int chunksize);
+
+        Task<IList<IList<Content>>> GetByTopic(string topic, int chunksize, string type);
+
+        Task<IList<string>> GetAllTopic(string type);
 
         Task<Content> GetById(int id);
 

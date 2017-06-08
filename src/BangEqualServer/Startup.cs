@@ -23,7 +23,9 @@ namespace BareMetalApi
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
+                //For VS Debug
                 //.SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), @"./src/BangEqualServer/"))
+                //Production & Dev
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
@@ -40,30 +42,29 @@ namespace BareMetalApi
             
             //DEV
             //Gets connection string from appsettings.json
-            //services.AddDbContext<ApplicationDbContext>(
-                //opts => opts.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(
+                opts => opts.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             //PRODUCTION
             //Gets connection string from Env Vars
-            string url = Environment.GetEnvironmentVariable("DATABASE_URL");
-            string[] substrings = url.Split(':');
-            string user = substrings[1].Substring(2);
-            string database = substrings[substrings.Length - 1].Substring(5);
-            string [] substrings2 = substrings[2].Split('@');
-            string password = substrings2[0];
-            string host = substrings2[1];
-            string connstr = $"User ID={user};Password={password};Host={host};Port=5432;Database={database};Pooling=true";
-            
-            services.AddDbContext<ApplicationDbContext>(
-                opts => opts.UseNpgsql(connstr));
+            //string url = Environment.GetEnvironmentVariable("DATABASE_URL");
+            //string[] substrings = url.Split(':');
+            //string user = substrings[1].Substring(2);
+            //string database = substrings[substrings.Length - 1].Substring(5);
+            //string [] substrings2 = substrings[2].Split('@');
+            //string password = substrings2[0];
+            //string host = substrings2[1];
+            //string connstr = $"User ID={user};Password={password};Host={host};Port=5432;Database={database};Pooling=true"; 
+            //services.AddDbContext<ApplicationDbContext>(
+                //opts => opts.UseNpgsql(connstr));
             
             services.Configure<TokenAuthOption>(options =>
             {
                 //LOCAL DEV USES CONFIG FILE
-                //options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
+                options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
 
                 //PRODUCTION USES ENV VAR
-                options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),  
+                //options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),  
                 SecurityAlgorithms.HmacSha256Signature);
             });
 
@@ -118,10 +119,10 @@ namespace BareMetalApi
                     ValidateIssuerSigningKey = true,
 
                     //LOCAL DEV USES CONFIG FILE
-                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
 
                     //PRODUCTION USES ENV VAR
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
                     
                     // When receiving a token, check that it is still valid.
                     RequireExpirationTime = true,

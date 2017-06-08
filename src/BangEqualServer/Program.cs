@@ -19,11 +19,13 @@ namespace BareMetalApi
                 .Build();
 
             var host = new WebHostBuilder()
-                //.UseConfiguration(config)
+                //Dev
+                .UseConfiguration(config)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
-                .UseUrls(url)
+                //Production
+                //.UseUrls(url)
                 .Build();
 
             host.Run();
