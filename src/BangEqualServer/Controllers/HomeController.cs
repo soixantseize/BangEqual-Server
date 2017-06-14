@@ -17,29 +17,15 @@ namespace BareMetalApi.Controllers
         }
         
         // GET home/article/4
-        [HttpGet("/home/{type:minlength(4)}/{chunksize}")]
-        public IActionResult Articles(string type, int chunksize)
+        [HttpGet("/home/{type}/{chunksize}")]
+        public IActionResult GetContentByType(string type, int chunksize)
         {
             return Ok( _repository.GetContent(type, chunksize).Result);          
         }
 
-        //GET home/topic/getall/article
-        [HttpGet("/home/topic/getall/{type}")]
-        public IActionResult GetAllTopic(string type)
-        {
-            return Ok( _repository.GetAllTopic(type).Result);              
-        }
-
-        //GET home/topic/webdev/4
-        [HttpGet("/home/topic/{type}/{topic}/{chunksize}")]
-        public IActionResult Topic(string topic, int chunksize, string type)
-        {
-            return Ok( _repository.GetByTopic(topic, chunksize, type).Result);              
-        }
-
         // GET home/5
         [HttpGet("/home/{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetContentById(int id)
         {
             var data = _repository.GetById(id).Result;
 			if(data != null && !String.IsNullOrEmpty(data.RenderString))
@@ -48,6 +34,22 @@ namespace BareMetalApi.Controllers
 				Console.Write("error in homecontroller get(int)");
             return Ok( data);
         }
+
+        //GET home/topic/getall/article
+        [HttpGet("/home/topic/getall/{type}")]
+        public IActionResult GetTopicsByType(string type)
+        {
+            return Ok( _repository.GetTopic(type).Result);              
+        }
+
+        //GET home/topic/article/webdev/4
+        [HttpGet("/home/topic/{type}/{topic}/{chunksize}")]
+        public IActionResult GetContentByTopicAndType(string topic, int chunksize, string type)
+        {
+            return Ok( _repository.GetByTopicAndType(topic, chunksize, type).Result);              
+        }
+
+
 
         // POST index/content
         [HttpPost]

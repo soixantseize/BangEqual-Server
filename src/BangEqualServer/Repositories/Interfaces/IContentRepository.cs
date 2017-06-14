@@ -11,9 +11,9 @@ namespace BareMetalApi.Repositories.Interfaces
 
         Task<IList<IList<Content>>> GetContent(string type, int chunksize);
 
-        Task<IList<IList<Content>>> GetByTopic(string topic, int chunksize, string type);
+        Task<IList<IList<Content>>> GetByTopicAndType(string topic, int chunksize, string type);
 
-        Task<IList<string>> GetAllTopic(string type);
+        Task<IList<string>> GetTopic(string type);
 
         Task<Content> GetById(int id);
 

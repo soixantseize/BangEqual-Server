@@ -48,7 +48,7 @@ namespace BareMetalApi.Repositories
             return chunks;
         }
 
-        public async Task <IList<IList<Content>>> GetByTopic(string topic, int chunksize, string type)
+        public async Task <IList<IList<Content>>> GetByTopicAndType(string topic, int chunksize, string type)
         {
             var dbEntity = await _context.SiteContent
                 .Where(c => c.Topic == topic && c.Type == type)
@@ -72,7 +72,7 @@ namespace BareMetalApi.Repositories
             
         }
 
-        public async Task <IList<string>> GetAllTopic(string type)
+        public async Task <IList<string>> GetTopic(string type)
         {
             var dbEntity = await _context.SiteContent
                 .Where(c => c.Type == type)

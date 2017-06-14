@@ -117,21 +117,19 @@ namespace BareMetalApi
                     ValidIssuer = "MyIssuer",
                     // When receiving a token, check that we've signed it.
                     ValidateIssuerSigningKey = true,
-<<<<<<< HEAD
 
                     //LOCAL DEV USES CONFIG FILE
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
 
                     //PRODUCTION USES ENV VAR
                     //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
-=======
+
                     
                     //LOCAL DEV USES CONFIG FILE
-                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
                     
                     //PRODUCTION USES ENV VAR
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
->>>>>>> 44105b7de53810c4b2c193d5fd5553ecbd7699fd
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
                     
                     // When receiving a token, check that it is still valid.
                     RequireExpirationTime = true,
