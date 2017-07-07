@@ -145,12 +145,12 @@ namespace BareMetalApi
               
 
             //Create DB on startup
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                 var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-                 context.Database.Migrate();
-                 context.EnsureSeedData();
-            }
+            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            //{
+                 //var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                 //context.Database.Migrate();
+                 //context.EnsureSeedData();
+            //}
         }
     }
 }
