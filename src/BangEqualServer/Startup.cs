@@ -61,10 +61,10 @@ namespace BareMetalApi
             services.Configure<TokenAuthOption>(options =>
             {
                 //LOCAL DEV USES CONFIG FILE
-                options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
+                //options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Security:secret_key"])),
 
                 //PRODUCTION USES ENV VAR
-                //options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),  
+                options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),  
                 SecurityAlgorithms.HmacSha256Signature);
             });
 
