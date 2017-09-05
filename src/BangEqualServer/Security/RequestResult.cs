@@ -1,7 +1,6 @@
 using System;
 
-
- namespace BareMetalApi.Security
+namespace BangEqualServer.Security
 {
  public class RequestResult
     {

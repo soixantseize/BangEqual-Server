@@ -14,11 +14,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using BareMetalApi.Models;
-using BareMetalApi.Security;
+using BangEqualServer.Models;
+using BangEqualServer.Security;
 
 
-namespace BareMetalApi.Controllers
+namespace BangEqualServer.Controllers
 {
     [Route("blog/[controller]")]
     public class AccountController : ControllerBase

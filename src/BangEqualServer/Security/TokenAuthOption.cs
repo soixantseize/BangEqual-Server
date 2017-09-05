@@ -2,9 +2,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 
-
- 
- namespace BareMetalApi.Security
+namespace BangEqualServer.Security
 {
   public class TokenAuthOption
     {

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BareMetalApi.Migrations
+namespace BangEqualServer.Migrations
 {
     public partial class InitialCreate : Migration
     {
@@ -9,28 +11,46 @@ namespace BareMetalApi.Migrations
         {
             migrationBuilder.CreateTable(
                 //Table name must be same as DbSet
-                name: "SiteContent",
+                name: "ArticleInfo",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         //upgrading from Npgsql.EntityFrameworkCore.PostgreSQL 1.0.0
                         //caused error on following line
                         .Annotation("Npgsql:ValueGeneratedOnAdd", true),
-                    ContentId = table.Column<int>(nullable: false),
-                    Type = table.Column<string>(nullable: false),
-                    Title = table.Column<string>(nullable: false),
-                    Author = table.Column<string>(nullable: false),
-                    Topic = table.Column<string>(nullable: false),
-                    Tags = table.Column<string>(nullable: false),
-                    Views = table.Column<int>(nullable: true),
-                    Shares = table.Column<int>(nullable: true),
-                    Caption = table.Column<string>(nullable: false),
-                    Active = table.Column<bool>(nullable: false),
-                    RenderString = table.Column<string>(nullable: false)
+                    ArticleInfoId = table.Column<int>(nullable: false),
+                    ArticleIdFK = table.Column<int>(nullable: false),
+                    DateWrit = table.Column<DateTime>(nullable: false),
+                    DateMod = table.Column<DateTime>(nullable: false),
+                    ArticleTitle = table.Column<string>(nullable: false),
+                    ArticleAuthor = table.Column<string>(nullable: false),
+                    ArticleTags = table.Column<string>(nullable: false),
+                    ArticleViews = table.Column<int>(nullable: true),
+                    ArticleShares = table.Column<int>(nullable: true),
+                    ArticleHeaderImageUrl = table.Column<string>(nullable: false),
+                    ArticleCaption = table.Column<string>(nullable: false),
+                    ArticleActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Content", x => x.Id);
+                    table.PrimaryKey("PK_ArticleInfo", x => x.Id);
+                });
+
+                migrationBuilder.CreateTable(
+                //Table name must be same as DbSet
+                name: "Article",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        //upgrading from Npgsql.EntityFrameworkCore.PostgreSQL 1.0.0
+                        //caused error on following line
+                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
+                    ArticleId = table.Column<int>(nullable: false),
+                    ArticleText = table.Column<string>(nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Article", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -217,7 +237,7 @@ namespace BareMetalApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "SiteContent");
+                name: "ArticleInfo");
             
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

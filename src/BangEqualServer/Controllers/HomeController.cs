@@ -1,17 +1,17 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using BareMetalApi.Models;
-using BareMetalApi.Repositories.Interfaces;
+using BangEqualServer.Models;
+using BangEqualServer.Repositories.Interfaces;
 
-namespace BareMetalApi.Controllers
+namespace BangEqualServer.Controllers
 {
     //[Authorize(Policy = "Bearer")]
     public class HomeController : ControllerBase
     {
-        private readonly IContentRepository _repository;
+        private readonly IArticleInfoRepository _repository;
 
-        public HomeController(IContentRepository repository)
+        public HomeController(IArticleInfoRepository repository)
         {
             _repository = repository;
         }
@@ -20,19 +20,20 @@ namespace BareMetalApi.Controllers
         [HttpGet("/home/{type}/{chunksize}")]
         public IActionResult GetContentByType(string type, int chunksize)
         {
-            return Ok( _repository.GetContent(type, chunksize).Result);          
+            return Ok( _repository.GetArticle(type, chunksize).Result);          
         }
 
         // GET home/5
         [HttpGet("/home/{id}")]
         public IActionResult GetContentById(int id)
         {
-            var data = _repository.GetById(id).Result;
-			if(data != null && !String.IsNullOrEmpty(data.RenderString))
-				data.RenderString = CommonMark.CommonMarkConverter.Convert(data.RenderString);
-			else
-				Console.Write("error in homecontroller get(int)");
-            return Ok( data);
+            //var data = _repository.GetById(id).Result;
+			//if(data != null && !String.IsNullOrEmpty(data.RenderString))
+				//data.RenderString = CommonMark.CommonMarkConverter.Convert(data.RenderString);
+			//else
+				//Console.Write("error in homecontroller get(int)");
+            //return Ok( data);
+            return Ok (null);
         }
 
         //GET home/topic/getall/article
@@ -53,7 +54,7 @@ namespace BareMetalApi.Controllers
 
         // POST index/content
         [HttpPost]
-        public IActionResult Post([FromBody]Content c)
+        public IActionResult Post([FromBody]ArticleInfo c)
         {
             try
             {
@@ -61,7 +62,7 @@ namespace BareMetalApi.Controllers
                 {
                     return BadRequest(ErrorCode.TitleAndContentRequired.ToString());
                 }
-                bool itemExists = _repository.DoesItemExist(c.ContentId).Result;
+                bool itemExists = _repository.DoesItemExist(c.ArticleInfoId).Result;
                 if (itemExists)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, ErrorCode.IDInUse.ToString());
@@ -77,7 +78,7 @@ namespace BareMetalApi.Controllers
 
         // PUT index/content/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]Content c)
+        public IActionResult Put(int id, [FromBody]ArticleInfo c)
         {
             try
             {

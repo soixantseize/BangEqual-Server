@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace BareMetalApi.Models
+namespace BangEqualServer.Models
 {
     public class ApplicationUser: IdentityUser
     {

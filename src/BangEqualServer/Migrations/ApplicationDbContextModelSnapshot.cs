@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using BareMetalApi.Models;
+using BangEqualServer.Models;
 
-namespace BareMetalApi.Migrations
+namespace BangEqualServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -15,36 +17,50 @@ namespace BareMetalApi.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
-            modelBuilder.Entity("BareMetalApi.Models.Content", b =>
+            modelBuilder.Entity("BangEqualServer.Models.ArticleInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ContentId");
+                    b.Property<int>("ArticleInfoId");
 
-                    b.Property<string>("Type");
+                    b.Property<int>("ArticleIdFK");
 
-                    b.Property<string>("Title");
+                    b.Property<DateTime>("DateWrit");
 
-                    b.Property<string>("Author");
+                    b.Property<DateTime>("DateMod");
 
-                    b.Property<string>("Topic");
+                    b.Property<string>("ArticleTitle");
 
-                    b.Property<string>("Tags");
+                    b.Property<string>("ArticleAuthor");
 
-                    b.Property<int>("Views");
+                    b.Property<string>("ArticleTags");
 
-                    b.Property<int>("Shares");
+                    b.Property<int>("ArticleViews");
 
-                    b.Property<string>("Caption");
+                    b.Property<int>("ArticleShares");
 
-                    b.Property<bool>("Active");
+                    b.Property<string>("ArticleHeaderImageUrl");
 
-                    b.Property<string>("RenderString");
+                    b.Property<string>("ArticleCaption");
+
+                    b.Property<bool>("ArticleActive");
 
                     b.HasKey("Id");
                     //Table name must be same as DbSet
-                    b.ToTable("SiteContent");
+                    b.ToTable("ArticleInfo");
+                });
+
+            modelBuilder.Entity("BangEqualServer.Models.Article", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ArticleText");
+
+                    b.HasKey("Id");
+                    //Table name must be same as DbSet
+                    b.ToTable("Article");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace BareMetalApi.Models
+namespace BangEqualServer.Models
 {
     public class ApplicationDbContext : DbContext
     {
@@ -9,6 +9,8 @@ namespace BareMetalApi.Models
         { }
 
         //object name must be same as table name defined in Migrations
-        public DbSet<Content> SiteContent{ get; set; }
+        public DbSet<Article> Article{ get; set; }
+
+        public DbSet<ArticleInfo> ArticleInfo{ get; set; }
     }
 }
