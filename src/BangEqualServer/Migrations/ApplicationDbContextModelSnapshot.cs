@@ -26,13 +26,13 @@ namespace BangEqualServer.Migrations
 
                     b.Property<int>("ArticleIdFK");
 
-                    b.Property<DateTime>("DateWrit");
+                    b.Property<DateTime>("ArticleDateWrit");
 
-                    b.Property<DateTime>("DateMod");
+                    b.Property<DateTime>("ArticleDateMod");
 
                     b.Property<string>("ArticleTitle");
 
-                    b.Property<string>("ArticleAuthor");
+                    b.Property<int>("ArticleAuthor");
 
                     b.Property<string>("ArticleTags");
 
@@ -41,8 +41,6 @@ namespace BangEqualServer.Migrations
                     b.Property<int>("ArticleShares");
 
                     b.Property<string>("ArticleHeaderImageUrl");
-
-                    b.Property<string>("ArticleCaption");
 
                     b.Property<bool>("ArticleActive");
 
@@ -55,6 +53,8 @@ namespace BangEqualServer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ArticleCaption");
 
                     b.Property<int>("ArticleText");
 

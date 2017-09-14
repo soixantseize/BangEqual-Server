@@ -143,15 +143,18 @@ namespace BangEqualServer
 
             //var dataText = System.IO.File.ReadAllText(@"./src/BangEqualServer/articledata.json");
             //var dataText = System.IO.File.ReadAllText(@"./contentdata.json"); 
+
+            var articleInfoData = System.IO.File.ReadAllText(@"./src/BangEqualServer/articleinfodata.json");
+            var articleData = System.IO.File.ReadAllText(@"./src/BangEqualServer/articledata.json");
               
 
             //Create DB on startup
-            //using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            //{
-                 //var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-                 //context.Database.Migrate();
-                 //context.EnsureSeedData();
-            //}
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                 var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                 context.Database.Migrate();
+                 context.EnsureSeedData(articleInfoData, articleData);
+            }
         }
     }
 }

@@ -19,83 +19,87 @@ namespace BangEqualServer.Repositories
 
         public async Task<bool> DoesItemExist(int id)
         {
-            //var dbEntity = await _context.SiteContent.AnyAsync(content => content.ContentId == id);
-            //return dbEntity;
-            return true;
+            var dbEntity = await _context.ArticleInfo.AnyAsync(article => article.ArticleIdFK == id);
+            return dbEntity;
         }
-        public async Task <IList<IList<ArticleInfo>>> GetArticle(string type, int chunksize)
+        public async Task <IList<IList<ArticleInfo>>> GetArticleInfo(int chunksize)
         {
 			
-            //var dbEntity = await _context.SiteContent
-                //.Where(c => c.Type == type)
-                //.Take(chunksize * 2)
-                //.ToListAsync();
+            var dbEntity = await _context.ArticleInfo
+                .Take(chunksize * 2)
+                .ToListAsync();
 
             //https://codereview.stackexchange.com/questions/90195/generic-method-to-split-provided-collection-into-smaller-collections
+            foreach(ArticleInfo ai in dbEntity)
+            {
+                ai.ArticleCaption = await this.GetArticleCaption(ai.ArticleIdFK);
+            }
 
-            //var chunks = new List<IList<ArticleInfo>>();
+            var chunks = new List<IList<ArticleInfo>>();
 
-            //var chunkCount = dbEntity.Count() / chunksize;
-
-            //If remainder is greater than 0, then add to chunkCount
-            //if (dbEntity.Count % chunksize > 0)
-                //chunkCount++;
-            
-            //for (var i = 0; i < chunkCount; i++)
-            //{
-                //chunks.Add(dbEntity.Skip(i * chunksize).Take(chunksize).ToList());
-            //}
-            
-            //return chunks;
-            return null;
-        }
-
-        public async Task <IList<IList<ArticleInfo>>> GetByTopicAndType(string topic, int chunksize, string type)
-        {
-            //var dbEntity = await _context.SiteContent
-               // .Where(c => c.Topic == topic && c.Type == type)
-				//.Take(chunksize * 2)
-                //.ToListAsync();
-
-            //var chunks = new List<IList<Content>>();
-
-            //var chunkCount = dbEntity.Count() / chunksize;
+            var chunkCount = dbEntity.Count() / chunksize;
 
             //If remainder is greater than 0, then add to chunkCount
-            //if (dbEntity.Count % chunksize > 0)
-                //chunkCount++;
+            if (dbEntity.Count % chunksize > 0)
+                chunkCount++;
             
-            //for (var i = 0; i < chunkCount; i++)
-            //{
-               // chunks.Add(dbEntity.Skip(i * chunksize).Take(chunksize).ToList());
-            //}
+            for (var i = 0; i < chunkCount; i++)
+            {
+                chunks.Add(dbEntity.Skip(i * chunksize).Take(chunksize).ToList());
+            }
             
-            //return chunks;
-            return null;
-            
+            return chunks;
         }
 
-        public async Task <IList<string>> GetTopic(string type)
+        public async Task <IList<IList<ArticleInfo>>> GetArticleInfoByTag(string tag, int chunksize)
         {
-            //var dbEntity = await _context.SiteContent
-                //.Where(c => c.Type == type)
-                //.Select(t => t.Topic) 
-                //.Distinct()
-                //.ToListAsync();
+            var dbEntity = await _context.ArticleInfo
+                .Where(c => c.ArticleTags == tag)
+				.Take(chunksize * 2)
+                .ToListAsync();
 
-            //return dbEntity;
-            return null;
-        }
+            var chunks = new List<IList<ArticleInfo>>();
 
-        public async Task <ArticleInfo> GetById(int id)
-        {
-            //var dbEntity = await _context.SiteContent
-				//.SingleOrDefaultAsync(m => m.ContentId == id);
-            //return dbEntity;
-            return null;
+            var chunkCount = dbEntity.Count() / chunksize;
+
+            //If remainder is greater than 0, then add to chunkCount
+            if (dbEntity.Count % chunksize > 0)
+                chunkCount++;
             
+            for (var i = 0; i < chunkCount; i++)
+            {
+                chunks.Add(dbEntity.Skip(i * chunksize).Take(chunksize).ToList());
+            }
+            
+            return chunks;
         }
 
+        public async Task <string> GetArticleCaption(int id)
+        {
+            var dbEntity = await _context.Article
+            .SingleOrDefaultAsync(m => m.ArticleId == id);
+
+            return dbEntity.ArticleCaption;
+        }
+
+        public async Task <string> GetArticleText(int id)
+        {
+            var dbEntity = await _context.Article
+            .SingleOrDefaultAsync(m => m.ArticleId == id);
+
+            return dbEntity.ArticleText;
+        }
+		
+		public async Task <IList<string>> GetArticleInfoTags()
+        {
+            var dbEntity = await _context.ArticleInfo
+                .Select(t => t.ArticleTags) 
+                .Distinct()
+                .ToListAsync();
+
+            return dbEntity;
+        }
+		
         public async Task <int> AddAsync(ArticleInfo content)
         {
             //_context.SiteContent.Add(new Content { Title = content.Title, RenderString = content.RenderString});

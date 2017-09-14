@@ -33,7 +33,7 @@ namespace BangEqualServer.Migrations
 
                     b.Property<string>("ArticleTitle");
 
-                    b.Property<string>("ArticleAuthor");
+                    b.Property<int>("ArticleAuthor");
 
                     b.Property<string>("ArticleTags");
 
@@ -42,8 +42,6 @@ namespace BangEqualServer.Migrations
                     b.Property<int>("ArticleShares");
 
                     b.Property<string>("ArticleHeaderImageUrl");
-
-                     b.Property<string>("ArticleCaption");
 
                     b.Property<bool>("ArticleActive");
 
@@ -58,6 +56,8 @@ namespace BangEqualServer.Migrations
                         .ValueGeneratedOnAdd();
                     
                     b.Property<int>("ArticleId");
+                    
+                    b.Property<string>("ArticleCaption");
 
                     b.Property<string>("ArticleText");
 

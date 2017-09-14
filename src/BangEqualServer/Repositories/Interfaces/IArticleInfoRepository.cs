@@ -6,16 +6,13 @@ namespace BangEqualServer.Repositories.Interfaces
 {
     public interface IArticleInfoRepository
     {
-        //Task<IEnumerable<BlogArticle>> TestGetAll();
         Task<bool> DoesItemExist(int id);
 
-        Task<IList<IList<ArticleInfo>>> GetArticle(string type, int chunksize);
+        Task<IList<IList<ArticleInfo>>> GetArticleInfo(int chunksize);
 
-        Task<IList<IList<ArticleInfo>>> GetByTopicAndType(string topic, int chunksize, string type);
-
-        Task<IList<string>> GetTopic(string type);
-
-        Task<ArticleInfo> GetById(int id);
+        Task<IList<IList<ArticleInfo>>> GetArticleInfoByTag(string tag, int chunksize);
+		
+		Task<IList<string>> GetArticleInfoTags();
 
         Task<int> AddAsync(ArticleInfo sitecontent);
 

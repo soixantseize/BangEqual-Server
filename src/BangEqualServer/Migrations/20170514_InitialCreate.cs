@@ -20,15 +20,14 @@ namespace BangEqualServer.Migrations
                         .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     ArticleInfoId = table.Column<int>(nullable: false),
                     ArticleIdFK = table.Column<int>(nullable: false),
-                    DateWrit = table.Column<DateTime>(nullable: false),
-                    DateMod = table.Column<DateTime>(nullable: false),
+                    ArticleDateWrit = table.Column<DateTime>(nullable: false),
+                    ArticleDateMod = table.Column<DateTime>(nullable: false),
                     ArticleTitle = table.Column<string>(nullable: false),
-                    ArticleAuthor = table.Column<string>(nullable: false),
+                    ArticleAuthor = table.Column<int>(nullable: false),
                     ArticleTags = table.Column<string>(nullable: false),
                     ArticleViews = table.Column<int>(nullable: true),
                     ArticleShares = table.Column<int>(nullable: true),
                     ArticleHeaderImageUrl = table.Column<string>(nullable: false),
-                    ArticleCaption = table.Column<string>(nullable: false),
                     ArticleActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -46,6 +45,7 @@ namespace BangEqualServer.Migrations
                         //caused error on following line
                         .Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     ArticleId = table.Column<int>(nullable: false),
+                    ArticleCaption = table.Column<string>(nullable: false),
                     ArticleText = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
@@ -238,6 +238,9 @@ namespace BangEqualServer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ArticleInfo");
+
+            migrationBuilder.DropTable(
+                name: "Article");
             
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");

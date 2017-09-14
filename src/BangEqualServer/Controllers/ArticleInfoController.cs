@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using BangEqualServer.Models;
@@ -7,48 +9,51 @@ using BangEqualServer.Repositories.Interfaces;
 namespace BangEqualServer.Controllers
 {
     //[Authorize(Policy = "Bearer")]
-    public class HomeController : ControllerBase
+    public class ArticleInfoController : ControllerBase
     {
         private readonly IArticleInfoRepository _repository;
 
-        public HomeController(IArticleInfoRepository repository)
+        public ArticleInfoController(IArticleInfoRepository repository)
         {
             _repository = repository;
         }
-        
-        // GET home/article/4
-        [HttpGet("/home/{type}/{chunksize}")]
-        public IActionResult GetContentByType(string type, int chunksize)
+
+        // GET articles/5
+        [HttpGet("/articles/{chunksize}")]
+        public IActionResult GetArticleInfo(int chunksize)
         {
-            return Ok( _repository.GetArticle(type, chunksize).Result);          
+            return Ok( _repository.GetArticleInfo(chunksize).Result);        
+        }
+        
+        // GET articles/5/webdev
+        [HttpGet("/articles/{chunksize}/{tag}")]
+        public IActionResult GetArticleInfoByTag(string tag, int chunksize)
+        {
+            return Ok( _repository.GetArticleInfoByTag(tag, chunksize).Result);          
         }
 
-        // GET home/5
-        [HttpGet("/home/{id}")]
-        public IActionResult GetContentById(int id)
+
+		
+		//GET articles/tags
+        [HttpGet("/articles/tags")]
+        public IActionResult GetArticleInfoTags()
         {
-            //var data = _repository.GetById(id).Result;
-			//if(data != null && !String.IsNullOrEmpty(data.RenderString))
-				//data.RenderString = CommonMark.CommonMarkConverter.Convert(data.RenderString);
-			//else
-				//Console.Write("error in homecontroller get(int)");
-            //return Ok( data);
-            return Ok (null);
+            return Ok( _repository.GetArticleInfoTags().Result);              
         }
 
         //GET home/topic/getall/article
-        [HttpGet("/home/topic/getall/{type}")]
-        public IActionResult GetTopicsByType(string type)
-        {
-            return Ok( _repository.GetTopic(type).Result);              
-        }
+        //[HttpGet("/home/topic/getall/{type}")]
+        //public IActionResult GetTopicsByType(string type)
+        //{
+            //return Ok( _repository.GetTopic(type).Result);              
+        //}
 
         //GET home/topic/article/webdev/4
-        [HttpGet("/home/topic/{type}/{topic}/{chunksize}")]
-        public IActionResult GetContentByTopicAndType(string topic, int chunksize, string type)
-        {
-            return Ok( _repository.GetByTopicAndType(topic, chunksize, type).Result);              
-        }
+        //[HttpGet("/home/topic/{type}/{topic}/{chunksize}")]
+        //public IActionResult GetContentByTopicAndType(string topic, int chunksize, string type)
+        //{
+            //return Ok( _repository.GetByTopicAndType(topic, chunksize, type).Result);              
+        //}
 
 
 
@@ -86,7 +91,7 @@ namespace BangEqualServer.Controllers
                 {
                     return BadRequest(ErrorCode.TitleAndContentRequired.ToString());
                 }
-                var existingContent = _repository.GetById(id);
+                var existingContent = "";
                 if (existingContent == null)
                 {
                     return NotFound(ErrorCode.RecordNotFound.ToString());
@@ -105,19 +110,19 @@ namespace BangEqualServer.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-             try
-            {
-                var content = _repository.GetById(id).Result;
-                if (content == null)
-                {
-                    return NotFound(ErrorCode.RecordNotFound.ToString());
-                }
-                _repository.DeleteAsync(content);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(ErrorCode.CouldNotDeleteItem.ToString());
-            }
+            // try
+            //{
+                //var content = _repository.GetArticleInfoById(id).Result;
+                //if (content == null)
+                //{
+                    //return NotFound(ErrorCode.RecordNotFound.ToString());
+               // }
+               // _repository.DeleteAsync(content);
+            //}
+            //catch (Exception e)
+            //{
+                //return BadRequest(ErrorCode.CouldNotDeleteItem.ToString());
+            //}
             return NoContent();
         }
 
