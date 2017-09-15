@@ -15,7 +15,7 @@ namespace BangEqualServer.Models
         public DateTime ArticleDateWrit { get;set; }
         public DateTime ArticleDateMod { get;set; }
         public string ArticleTitle { get;set; }
-        public int ArticleAuthor { get;set; }
+        public string ArticleAuthor { get;set; }
         public string ArticleTags { get;set; }
         public string ArticleCaption = "";
         public string ArticleText = "";

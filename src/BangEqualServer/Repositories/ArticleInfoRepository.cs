@@ -24,31 +24,24 @@ namespace BangEqualServer.Repositories
         }
         public async Task <IList<IList<ArticleInfo>>> GetArticleInfo(int chunksize)
         {
-			
+            //First request for articles will always be newest
             var dbEntity = await _context.ArticleInfo
                 .Take(chunksize * 2)
+                .Distinct()
+                .OrderByDescending(d => d.ArticleDateWrit)
                 .ToListAsync();
 
-            //https://codereview.stackexchange.com/questions/90195/generic-method-to-split-provided-collection-into-smaller-collections
+            
             foreach(ArticleInfo ai in dbEntity)
             {
+                //ArticleCaption not in meta table
                 ai.ArticleCaption = await this.GetArticleCaption(ai.ArticleIdFK);
+
+                //Get AuthorName
+                ai.ArticleAuthor = await this.GetArticleAuthor(ai.ArticleAuthor);
             }
 
-            var chunks = new List<IList<ArticleInfo>>();
-
-            var chunkCount = dbEntity.Count() / chunksize;
-
-            //If remainder is greater than 0, then add to chunkCount
-            if (dbEntity.Count % chunksize > 0)
-                chunkCount++;
-            
-            for (var i = 0; i < chunkCount; i++)
-            {
-                chunks.Add(dbEntity.Skip(i * chunksize).Take(chunksize).ToList());
-            }
-            
-            return chunks;
+            return assignChunks(dbEntity, chunksize);
         }
 
         public async Task <IList<IList<ArticleInfo>>> GetArticleInfoByTag(string tag, int chunksize)
@@ -56,30 +49,17 @@ namespace BangEqualServer.Repositories
             var dbEntity = await _context.ArticleInfo
                 .Where(c => c.ArticleTags == tag)
 				.Take(chunksize * 2)
+                .Distinct()
+                .OrderByDescending(d => d.ArticleDateWrit)
                 .ToListAsync();
 
-            var chunks = new List<IList<ArticleInfo>>();
-
-            var chunkCount = dbEntity.Count() / chunksize;
-
-            //If remainder is greater than 0, then add to chunkCount
-            if (dbEntity.Count % chunksize > 0)
-                chunkCount++;
-            
-            for (var i = 0; i < chunkCount; i++)
+            //ArticleCaption not in meta table
+            foreach(ArticleInfo ai in dbEntity)
             {
-                chunks.Add(dbEntity.Skip(i * chunksize).Take(chunksize).ToList());
+                ai.ArticleCaption = await this.GetArticleCaption(ai.ArticleIdFK);
             }
-            
-            return chunks;
-        }
 
-        public async Task <string> GetArticleCaption(int id)
-        {
-            var dbEntity = await _context.Article
-            .SingleOrDefaultAsync(m => m.ArticleId == id);
-
-            return dbEntity.ArticleCaption;
+            return assignChunks(dbEntity, chunksize);
         }
 
         public async Task <string> GetArticleText(int id)
@@ -120,6 +100,50 @@ namespace BangEqualServer.Repositories
         {
             //_context.SiteContent.Remove(c);
             //await _context.SaveChangesAsync();
+        }
+
+        private async Task <string> GetArticleCaption(int id)
+        {
+            var dbEntity = await _context.Article
+            .SingleOrDefaultAsync(m => m.ArticleId == id);
+
+            return dbEntity.ArticleCaption;
+        }
+
+        private async Task <string> GetArticleAuthor(string id)
+        {
+            int x;
+            if (!Int32.TryParse(id, out x))
+            {
+                //Error parsing id
+            }
+
+            //Try to query aspnetusers table for full name
+            //var dbEntity = await _context.Article
+            //.SingleOrDefaultAsync(m => m.ArticleId == id);
+
+            return "";
+        }
+
+        private IList<IList<ArticleInfo>> assignChunks(IList<ArticleInfo> articleInfoList, int chunksize)
+        {
+            //https://codereview.stackexchange.com/questions/90195/generic-method-to-split-provided-collection-into-smaller-collections
+
+            var chunks = new List<IList<ArticleInfo>>();
+
+            //chunkCount should always be 2 unless DB runs out of articles
+            var chunkCount = articleInfoList.Count() / chunksize;
+
+            //If remainder is greater than 0, then add to chunkCount
+            if (articleInfoList.Count % chunksize > 0)
+                chunkCount++;
+            
+            for (var i = 0; i < chunkCount; i++)
+            {
+                chunks.Add(articleInfoList.Skip(i * chunksize).Take(chunksize).ToList());
+            }
+            
+            return chunks;
         }
     }
 }

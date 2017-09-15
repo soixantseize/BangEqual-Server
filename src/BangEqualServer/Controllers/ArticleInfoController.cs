@@ -32,8 +32,6 @@ namespace BangEqualServer.Controllers
             return Ok( _repository.GetArticleInfoByTag(tag, chunksize).Result);          
         }
 
-
-		
 		//GET articles/tags
         [HttpGet("/articles/tags")]
         public IActionResult GetArticleInfoTags()
