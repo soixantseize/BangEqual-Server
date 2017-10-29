@@ -36,9 +36,6 @@ namespace BangEqualServer.Repositories
             {
                 //ArticleCaption not in meta table
                 ai.ArticleCaption = await this.GetArticleCaption(ai.ArticleIdFK);
-
-                //Get AuthorName
-                ai.ArticleAuthor = await this.GetArticleAuthor(ai.ArticleAuthor);
             }
 
             return assignChunks(dbEntity, chunksize);
@@ -62,12 +59,22 @@ namespace BangEqualServer.Repositories
             return assignChunks(dbEntity, chunksize);
         }
 
-        public async Task <string> GetArticleText(int id)
+        public async Task <Article> GetArticleTextById(int id)
         {
             var dbEntity = await _context.Article
             .SingleOrDefaultAsync(m => m.ArticleId == id);
 
-            return dbEntity.ArticleText;
+            var entry = await _context.ArticleInfo
+            .SingleOrDefaultAsync(m => m.ArticleIdFK == id);
+
+            entry.ArticleViews++;
+            var new_entry = _context.Entry(entry);
+            new_entry.Property(e => e.ArticleViews).IsModified = true;
+
+            await _context.SaveChangesAsync();
+
+
+            return dbEntity;
         }
 		
 		public async Task <IList<string>> GetArticleInfoTags()
@@ -94,7 +101,15 @@ namespace BangEqualServer.Repositories
             //entry.Property(e => e.Title).IsModified = true;
             //entry.Property(e => e.RenderString).IsModified = true;
             //await _context.SaveChangesAsync();
+
+            //var entry = await _context.ArticleInfo
+                //.SingleOrDefaultAsync(m => m.ArticleIdFK == id);
+            //entry.ArticleViews++;
+            //var new_entry = _context.Entry(entry);
+            //new_entry.Property(e => e.ArticleViews).IsModified = true;            
+            //await _context.SaveChangesAsync();
         }
+
 
         public async Task DeleteAsync(ArticleInfo c)
         {
@@ -108,21 +123,6 @@ namespace BangEqualServer.Repositories
             .SingleOrDefaultAsync(m => m.ArticleId == id);
 
             return dbEntity.ArticleCaption;
-        }
-
-        private async Task <string> GetArticleAuthor(string id)
-        {
-            int x;
-            if (!Int32.TryParse(id, out x))
-            {
-                //Error parsing id
-            }
-
-            //Try to query aspnetusers table for full name
-            //var dbEntity = await _context.Article
-            //.SingleOrDefaultAsync(m => m.ArticleId == id);
-
-            return "";
         }
 
         private IList<IList<ArticleInfo>> assignChunks(IList<ArticleInfo> articleInfoList, int chunksize)

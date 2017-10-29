@@ -23,7 +23,7 @@ namespace BangEqualServer.Migrations
                     ArticleDateWrit = table.Column<DateTime>(nullable: false),
                     ArticleDateMod = table.Column<DateTime>(nullable: false),
                     ArticleTitle = table.Column<string>(nullable: false),
-                    ArticleAuthor = table.Column<int>(nullable: false),
+                    ArticleAuthor = table.Column<string>(nullable: false),
                     ArticleTags = table.Column<string>(nullable: false),
                     ArticleViews = table.Column<int>(nullable: true),
                     ArticleShares = table.Column<int>(nullable: true),

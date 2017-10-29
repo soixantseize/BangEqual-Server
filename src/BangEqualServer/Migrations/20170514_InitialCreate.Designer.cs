@@ -33,7 +33,7 @@ namespace BangEqualServer.Migrations
 
                     b.Property<string>("ArticleTitle");
 
-                    b.Property<int>("ArticleAuthor");
+                    b.Property<string>("ArticleAuthor");
 
                     b.Property<string>("ArticleTags");
 

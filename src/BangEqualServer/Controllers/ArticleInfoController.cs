@@ -32,11 +32,18 @@ namespace BangEqualServer.Controllers
             return Ok( _repository.GetArticleInfoByTag(tag, chunksize).Result);          
         }
 
-		//GET articles/tags
+	    //GET articles/tags
         [HttpGet("/articles/tags")]
         public IActionResult GetArticleInfoTags()
         {
             return Ok( _repository.GetArticleInfoTags().Result);              
+        }
+	
+	    //GET articles/text/3
+        [HttpGet("/articles/text/{articleid}")]
+        public IActionResult GetArticleTextById(int articleid)
+        {
+            return Ok( _repository.GetArticleTextById(articleid).Result);              
         }
 
         //GET home/topic/getall/article

@@ -13,6 +13,8 @@ namespace BangEqualServer.Repositories.Interfaces
         Task<IList<IList<ArticleInfo>>> GetArticleInfoByTag(string tag, int chunksize);
 		
 		Task<IList<string>> GetArticleInfoTags();
+		
+		Task<Article> GetArticleTextById(int id);
 
         Task<int> AddAsync(ArticleInfo sitecontent);
 

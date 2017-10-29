@@ -20,12 +20,12 @@ namespace BangEqualServer
 
             var host = new WebHostBuilder()
                 //Dev
-                .UseConfiguration(config)
+                //.UseConfiguration(config)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 //Production
-                //.UseUrls(url)
+                .UseUrls(url)
                 .Build();
 
             host.Run();
