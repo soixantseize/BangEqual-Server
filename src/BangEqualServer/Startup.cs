@@ -141,8 +141,8 @@ namespace BangEqualServer
 
             app.UseMvc();
 
-            var articleInfoData = System.IO.File.ReadAllText(@"./articleinfodata.json");
-            var articleData = System.IO.File.ReadAllText(@"./articledata.json");
+            //var articleInfoData = System.IO.File.ReadAllText(@"./articleinfodata.json");
+            //var articleData = System.IO.File.ReadAllText(@"./articledata.json");
               
 
             //Create DB on startup
